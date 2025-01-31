@@ -3,3 +3,8 @@ torch
 pytest
 transformers
 accelerate
+opencv-python
+controlnet_aux
+peft
+mediapipe
+yt-dlp
