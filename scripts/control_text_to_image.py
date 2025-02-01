@@ -30,7 +30,7 @@ image = pipe(
     image=pose_image_1,
     num_inference_steps=50,
     guidance_scale=7.5,
-    strength=0.9,
+    strength=0.7,
     controlnet_conditioning_scale=1.2,
     generator=generator
 ).images[0]
