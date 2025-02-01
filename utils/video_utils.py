@@ -2,6 +2,7 @@ import logging
 import os
 
 import cv2
+from moviepy import VideoFileClip
 from yt_dlp import YoutubeDL
 
 
@@ -40,6 +41,7 @@ def video_to_frames(video_path, frames_path):
         cap.release()
         logging.info(f"Extracted {frame_count} frames to {frames_path}")
 
+
 def download_video(url, output_path):
     ydl_opts = {
         'format': 'mp4',
@@ -49,3 +51,36 @@ def download_video(url, output_path):
         info_dict = ydl.extract_info(url, download=True)
         video_path = ydl.prepare_filename(info_dict)
     return video_path
+
+
+def get_video_frames(video_path):
+    return_value = {}
+    try:
+        cap = cv2.VideoCapture(video_path)
+        return_value["frames"] = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        return_value["fps"] = int(cap.get(cv2.CAP_PROP_FPS))
+        return_value["duration"] = f"{return_value['frames'] / return_value['fps']:.2f}s"
+    except Exception as e:
+        error_message = f"Error while reading video file: {e}"
+        logging.error(error_message)
+        return_value = {
+            "error": error_message
+        }
+    return return_value
+
+def extract_audio(video_path, audio_path):
+    return_value = None
+    try:
+        video = VideoFileClip(video_path)
+        audio = video.audio
+        audio.write_audiofile(audio_path)
+        audio.close()
+        video.close()
+    except Exception as e:
+        error_message = f"Error while extracting audio: {e}"
+        logging.error(error_message)
+        return_value = {
+            "error": error_message
+        }
+    return return_value
+

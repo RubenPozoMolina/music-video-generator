@@ -8,3 +8,5 @@ controlnet_aux
 peft
 mediapipe
 yt-dlp
+xformers
+moviepy
