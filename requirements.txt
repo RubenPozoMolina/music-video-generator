@@ -10,3 +10,4 @@ mediapipe
 yt-dlp
 xformers
 moviepy
+requests

@@ -1,0 +1,16 @@
+{
+  "project": "Rasputin Julia K Barni",
+  "output": "output/rasputin",
+  "scenes": [
+    {
+      "path": "dance",
+      "video_url": "https://www.youtube.com/shorts/9Ac3prM7J3A",
+      "video_file": "rasputin.mp4",
+      "model_id": "lykon/dreamshaper-8",
+      "prompt": "Rasputin dancing in the Russian steppe with kremlin in background",
+      "negative_prompt": "low quality, blurry, distorted",
+      "lora_url": "https://civitai.com/api/download/models/328098?type=Model&format=SafeTensor",
+      "lora_file": "epic_fantasy_armor.safetensor"
+    }
+  ]
+}

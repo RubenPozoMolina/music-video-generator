@@ -24,8 +24,8 @@ def create_video_from_images(images_path, video_output, fps=30):
 
 
 def video_to_frames(video_path, frames_path):
-    if not os.path.exists(video_path):
-        os.makedirs(video_path)
+    if not os.path.exists(frames_path):
+        os.makedirs(frames_path)
         cap = cv2.VideoCapture(video_path)
         frame_count = 0
         while True:
@@ -45,7 +45,7 @@ def video_to_frames(video_path, frames_path):
 def download_video(url, output_path):
     ydl_opts = {
         'format': 'mp4',
-        'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s')
+        'outtmpl': output_path
     }
     with YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=True)
