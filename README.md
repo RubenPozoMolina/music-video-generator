@@ -18,6 +18,10 @@ Install torch with cuda:
 ```console
 pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu130
 ```
+Nightly version of torch:
+```console
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu130 
+``` 
 
 Alternatively, you can verify that the installation was successful by running:
 ```console
@@ -32,3 +36,18 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
+Create image:
+```console
+python -m scripts.create_image
+```
+
+Modify image
+```console
+python -m scripts.modify_image
+```
+
+Create video from screenplay
+```console
+python -m scripts.create_video_from_screenplay
+```

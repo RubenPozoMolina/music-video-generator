@@ -1,0 +1,42 @@
+[
+    {
+        "scene": 1,
+        "description": "A man is looking at his mobile phone. In the middle of a street"
+    },
+    {
+        "scene": 2,
+        "description": "The screen of his phone glows with a strange code. The man looks confused."
+    },
+    {
+        "scene": 3,
+        "description": "A close-up of the phone shows the virus spreading across the screen."
+    },
+    {
+        "scene": 4,
+        "description": "The man's face starts to contort as if he's feeling pain."
+    },
+    {
+        "scene": 5,
+        "description": "His eyes turn red and his skin changes color, becoming pale."
+    },
+    {
+        "scene": 6,
+        "description": "He begins to stagger and move slowly, now in a zombie-like state."
+    },
+    {
+        "scene": 7,
+        "description": "Passersby scream and run away from the now-zombie man."
+    },
+    {
+        "scene": 8,
+        "description": "The camera pans to show other people turning into zombies one by one."
+    },
+    {
+        "scene": 9,
+        "description": "A group of survivors huddle together, looking over a fence at the chaos."
+    },
+    {
+        "scene": 10,
+        "description": "The final shot shows the cityscape filled with zombies, with a lone survivor walking away in the distance."
+    }
+]

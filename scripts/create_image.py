@@ -10,10 +10,6 @@ def main():
         512
 
     )
-    image_utils.modify_image(
-        zombie,
-        "The zombie The person turns to the right"
-    )
 
 if __name__=="__main__":
     main()
