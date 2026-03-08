@@ -1,0 +1,22 @@
+{
+  "title": "Geometric progression",
+  "artist": "Anonymous",
+  "height": 720,
+  "width": 1280,
+  "prompt": "Geometric figures dancing in the void",
+  "negative_prompt": "worst quality, low quality, low resolution, blurry, out of focus, noisy, pixelated, jpeg artifacts, watermark, logo, signature, caption, person, people",
+  "screenplay": [
+    {
+      "scene": 1,
+      "prompt": "A golden sphere spinning"
+    },
+    {
+      "scene": 2,
+      "prompt": "A transparent cube melting."
+    },
+    {
+      "scene": 3,
+      "prompt": "A pyramid of flowing earth."
+    }
+  ]
+}

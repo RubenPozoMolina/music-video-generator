@@ -1,4 +1,6 @@
 import gc
+import logging
+
 import torch
 
 
@@ -15,14 +17,18 @@ class GPUUtils:
             print("-" * 40)
 
     @staticmethod
-    def get_gpu_memory_usage():
+    def show_mem():
         gpus = torch.cuda.device_count()
-        print("GPUS", gpus)
         for i in range(gpus):
-            allocated = torch.cuda.memory_allocated(i-1) / (1024**3)
-            total = torch.cuda.get_device_properties(i-1).total_memory / (1024**3)
-            percentage = (allocated / total) * 100
-            print(f"GPU {i-1} Memory Usage: {allocated:.2f} GB / {total:.2f} GB ({percentage:.2f}%)")
+            mem_usage = f"Memory Usage: {torch.cuda.memory_allocated(i) / (1024**3):.2f} GB "
+            mem_capacity = f"Memory Capacity: {torch.cuda.get_device_properties(i).total_memory / (1024**3):.2f} GB "
+            mem_utilization = f"Memory Utilization: {(torch.cuda.memory_allocated(i) / torch.cuda.get_device_properties(i).total_memory) * 100:.2f}%"
+            logging.info(
+                "%s %s %s",
+                mem_usage,
+                mem_capacity,
+                mem_utilization
+            )
 
     @staticmethod
     def free_memory():

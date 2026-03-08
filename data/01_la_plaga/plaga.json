@@ -1,0 +1,35 @@
+{
+  "title": "La Plaga",
+  "artist": "Largo Viaje",
+  "height": 720,
+  "width": 1280,
+  "prompt": "In the middle of a street. The scene is happening in wall street. Full body",
+  "negative_prompt": "worst quality, low quality, lowres, blurry, out of focus, noisy, pixelated, jpeg artifacts, distorted, deformed, malformed, disfigured, bad anatomy, bad proportions, extra limbs, extra fingers, fused fingers, mutated hands, malformed hands, poorly drawn hands, poorly drawn face, asymmetrical eyes, crossed eyes, duplicate features, cloned face, extra heads, long neck, unnatural pose, twisted body, broken limbs, floating limbs, disconnected limbs, cut off, cropped, out of frame, duplicate, morbid, gross, ugly, text, watermark, logo, signature, caption",
+  "screenplay": [
+    {
+      "scene": 1,
+      "prompt": "A man dressed in a suite is looking at his mobile phone."
+    },
+    {
+      "scene": 2,
+      "prompt": "Something strange starts happening on the phone and the man gets scared."
+    },
+    {
+      "scene": 3,
+      "prompt": "A virus comes out of the mobile phone and infects its user."
+    },
+    {
+      "scene": 4,
+      "prompt": "The man begins to transform into a zombie, showing signs of infection."
+    },
+    {
+      "scene": 5,
+      "prompt": "The man begins to walk like a zombie, slowly and mechanically."
+    },
+    {
+      "scene": 6,
+      "prompt": "The man starts to infect other people, who also begin to turn into zombies."
+    }
+
+  ]
+}

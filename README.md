@@ -37,17 +37,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-Create image:
+Create video:
 ```console
-python -m scripts.create_image
-```
-
-Modify image
-```console
-python -m scripts.modify_image
-```
-
-Create video from screenplay
-```console
-python -m scripts.create_video_from_screenplay
+python -m scripts.create_video --config-file data/00_geometric_progression/geometric_progression.json --output-path output/geometric_progression
 ```

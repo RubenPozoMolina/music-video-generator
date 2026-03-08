@@ -1,29 +1,51 @@
 import gc
 import logging
+import random
+import subprocess
+import time
+
 import torch
-from diffusers import WanImageToVideoPipeline
+from diffusers import WanImageToVideoPipeline, StableVideoDiffusionPipeline
 from diffusers.utils import load_image, export_to_video
 from moviepy import VideoFileClip, concatenate_videoclips
 from PIL import Image
+
+from utils.gpu_utils import GPUUtils
+from utils.logging_utils import show_elapsed_time
 
 
 class VideoUtils:
 
     device = None
-    pipe = None
+    model = None
+    pipeline = None
 
-    TARGET_WIDTH = 1280
-    TARGET_HEIGHT = 720
 
-    def __init__(self):
+    def __init__(self, model):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.pipe = WanImageToVideoPipeline.from_pretrained(
-            "Wan-AI/Wan2.1-FLF2V-14B-720P-diffusers",
-            torch_dtype=torch.bfloat16
-        ).to(self.device)
-        self.pipe.vae.enable_slicing()
-        self.pipe.vae.enable_tiling()
-        self.pipe.enable_model_cpu_offload()
+        self.model = model
+        GPUUtils.show_gpu_info()
+
+    def _load_pipeline(self):
+        start_time = time.perf_counter()
+        if "Wan" in self.model:
+            self.pipeline = WanImageToVideoPipeline.from_pretrained(
+                self.model,
+                torch_dtype=torch.bfloat16
+            )
+            self.pipeline.to(self.device)
+        elif "stability" in self.model:
+            self.pipeline = StableVideoDiffusionPipeline.from_pretrained(
+                self.model,
+                torch_dtype=torch.float16,
+                variant="fp16"
+            )
+            self.pipeline.to(self.device)
+        else:
+            raise Exception("Model not loaded")
+        logging.info("Loaded model %s", self.model)
+        GPUUtils.show_mem()
+        show_elapsed_time(start_time)
 
     @staticmethod
     def free_memory():
@@ -60,13 +82,20 @@ class VideoUtils:
         num_inference_steps: int = 50,
         guidance_scale: float = 8.0,
         fps: int = 24,
+        seed: int = None,
+        width: int = 1280,
+        height: int = 780
     ) -> str:
-
+        if self.pipeline is None:
+            self._load_pipeline()
+        start_time = time.perf_counter()
+        effective_seed = seed if seed is not None else random.randint(0, 1000000)
+        generator = torch.Generator(device=self.device).manual_seed(effective_seed)
         first_frame = self._prepare_frame(
-            first_image, self.TARGET_WIDTH, self.TARGET_HEIGHT
+            first_image, width, height
         )
         last_frame = self._prepare_frame(
-            last_image, self.TARGET_WIDTH, self.TARGET_HEIGHT
+            last_image, width, height
         )
 
         negative_prompt = (
@@ -75,19 +104,27 @@ class VideoUtils:
         )
 
         with torch.inference_mode():
-            output = self.pipe(
-                image=first_frame,
-                last_image=last_frame,
-                prompt=prompt,
-                negative_prompt=negative_prompt,
-                num_frames=81,
-                guidance_scale=guidance_scale,
-                num_inference_steps=num_inference_steps,
-                generator=torch.Generator(device=self.device).manual_seed(42),
-            )
+            try:
+                output = self.pipeline(
+                    image=first_frame,
+                    last_image=last_frame,
+                    prompt=prompt,
+                    negative_prompt=negative_prompt,
+                    num_frames=81,
+                    guidance_scale=guidance_scale,
+                    num_inference_steps=num_inference_steps,
+                    generator=generator,
+                )
+            except torch.cuda.OutOfMemoryError as e:
+                logging.error(f"OOM while inference: {e}")
+                self.free_memory()
+                raise
 
         export_to_video(output.frames[0], output_path, fps=fps)
+        GPUUtils.show_mem()
+        show_elapsed_time(start_time)
         self.free_memory()
+        GPUUtils.show_mem()
         return output_path
 
     @staticmethod
@@ -110,3 +147,16 @@ class VideoUtils:
         finally:
             for clip in clips:
                 clip.close()
+
+    @staticmethod
+    def extract_last_frame(video_path, output_path):
+        # Use ffmpeg to extract the last frame of the video
+        command = [
+            "ffmpeg",
+            "-i", video_path,
+            "-vframes", "1",
+            "-ss", "00:00:01",
+            output_path
+        ]
+        subprocess.run(command, check=True)
+        logging.info(f"Last frame saved to {output_path}")

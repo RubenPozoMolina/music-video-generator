@@ -1,4 +1,4 @@
-diffusers
+git+https://github.com/huggingface/diffusers.git
 huggingface_hub
 transformers
 safetensors
@@ -25,3 +25,4 @@ loguru
 sentencepiece
 bitsandbytes
 moviepy
+psutil
